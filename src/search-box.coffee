@@ -28,6 +28,7 @@ class SearchBox
     @closeMark = @root.find ".close"
     @isOpen = false
     @filteredOptions = null
+
     @root.toggleClass "is-open", false
 
     # refactor
@@ -90,12 +91,18 @@ class SearchBox
   on: ->
     args = @bindMethods arguments
     $.fn.on.apply @root, args
+    @
 
   trigger: ->
     $.fn.trigger.apply @root, arguments
+    @
 
-  val: ->
-    @value
+  val: ( param ) ->
+    if param?
+      @value = param
+      @
+    else
+      @value
 
   selectItem: ( param ) =>
     unless param instanceof jQuery
@@ -104,7 +111,7 @@ class SearchBox
     @items.removeClass "is-selected"
     param.addClass "is-selected"
     @current.html param.html()
-    @value = param.html()
+    @val param.html()
     @trigger "change"
     @close()
 
