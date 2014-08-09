@@ -13,6 +13,8 @@ slice = Function::call.bind Array::slice
 # key codes
 ENTER = 13
 ESC = 27
+UP = 38
+DOWN = 40
 
 body = $ "body"
 
@@ -29,12 +31,19 @@ class SearchBox
     @isOpen = false
     @filteredOptions = null
 
+    @selectedItem = null
+    @activeItem = null
+
     @root.toggleClass "is-open", false
 
-    # refactor
+    @root.on "keyup", ( evt ) =>
+      if evt.which is ENTER or evt.which is DOWN
+        @open()
+
     body.on "click", @close
     @root.on "click", ( evt ) ->
       evt.stopPropagation()
+
     @button.click @toggleState
     @searchField.keyup @handleInput
     @closeMark.click  @close
@@ -43,15 +52,18 @@ class SearchBox
     @selectItem @items.first()
 
   open: =>
-    @isOpen = true
-    @root.toggleClass "is-open", @isOpen
-    @searchField.focus()
+    unless @isOpen
+      @isOpen = true
+      @root.toggleClass "is-open", @isOpen
+      @searchField.focus()
 
   close: =>
-    @isOpen = false
-    @root.toggleClass "is-open", @isOpen
-    @items.show()
-    @searchField.val( "" ).blur()
+    if @isOpen
+      @isOpen = false
+      @root.toggleClass "is-open", @isOpen
+      @items.show()
+      @searchField.val( "" )
+      @root.focus()
 
   toggleState: =>
     if @isOpen then @close() else @open()
@@ -61,6 +73,15 @@ class SearchBox
       @close()
     else if evt.which is ENTER
       @switchToActive()
+      evt.stopPropagation()
+    else if evt.which is UP
+      prev = @activeItem.prev()
+      if prev.length
+        @changeActive prev
+    else if evt.which is DOWN
+      next = @activeItem.next()
+      if next.length
+        @changeActive next
     else
       @filterResults()
 
@@ -83,10 +104,10 @@ class SearchBox
       param = $ param.target
     @items.removeClass "is-active"
     param.addClass "is-active"
-    @active = param
+    @activeItem = param
 
   switchToActive: =>
-    @selectItem @active
+    @selectItem @activeItem
 
   on: ->
     args = @bindMethods arguments
@@ -110,6 +131,8 @@ class SearchBox
       param = $ param.target
     @items.removeClass "is-selected"
     param.addClass "is-selected"
+    @selectedItem = param
+    @changeActive param
     @current.html param.html()
     @val param.html()
     @trigger "change"

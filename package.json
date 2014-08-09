@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "sass src/style.sass dist/style.css && coffee -o ./dist src/search-box.coffee",
+    "watch": "coffee -w -o ./dist src/search-box.coffee",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
