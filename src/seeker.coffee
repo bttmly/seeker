@@ -62,6 +62,9 @@ normalize = ( param ) ->
   # already jQuery
   if param instanceof jQuery
     param
+  # by index
+  else if typeof param is "number"
+    @items.eq param
   # is event
   else if param.target
     $ param.target
@@ -191,15 +194,15 @@ class Seeker extends jQuery
     @el.val()
 
   setActive: ( param ) =>
-    param = normalize param
+    param = normalize.call @, param
     if param isnt @activeItem
-      @activeItem = normalize param
+      @activeItem = param
       @items.removeClass "is-active"
       @activeItem.addClass "is-active"
     @
 
   setSelected: ( param, quiet ) =>
-    param = normalize param
+    param = normalize.call @, param
     if param isnt @selectedItem
       @selectedItem = param
       @items.removeClass "is-selected"
@@ -209,7 +212,6 @@ class Seeker extends jQuery
       @setActive @selectedItem
     @close()
     @
-
 
   # wrapper fix, a la space pen
   pushStack: ( elems ) ->

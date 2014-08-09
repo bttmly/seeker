@@ -68,6 +68,8 @@
   normalize = function(param) {
     if (param instanceof jQuery) {
       return param;
+    } else if (typeof param === "number") {
+      return this.items.eq(param);
     } else if (param.target) {
       return $(param.target);
     } else {
@@ -243,9 +245,9 @@
     };
 
     Seeker.prototype.setActive = function(param) {
-      param = normalize(param);
+      param = normalize.call(this, param);
       if (param !== this.activeItem) {
-        this.activeItem = normalize(param);
+        this.activeItem = param;
         this.items.removeClass("is-active");
         this.activeItem.addClass("is-active");
       }
@@ -253,7 +255,7 @@
     };
 
     Seeker.prototype.setSelected = function(param, quiet) {
-      param = normalize(param);
+      param = normalize.call(this, param);
       if (param !== this.selectedItem) {
         this.selectedItem = param;
         this.items.removeClass("is-selected");
