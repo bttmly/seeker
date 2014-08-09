@@ -5,51 +5,68 @@
   <style>
     body {
       font-family: "Avenir Next", sans-serif;
+      padding: 2rem
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    .btn {
+      background: #e67e22;
+      border: 1px solid transparent;
+      margin: 1rem 0;
+      border-radius: .25rem;
+      color: white;
+      padding: .25rem .5rem;
+      box-shadow: 0 0 0 0 transparent
+      transition: box-shadow .5s ease-in-out;
+    }
+    [data-visible='1'] {
+      box-shadow: inset 0 2px 4px 2px rgba(0, 0, 0, .15);
+    }
+
+    .spacer {
+      padding-bottom: 1rem;
     }
   </style>
   <!-- for development -->
-  <!--
-  <script src="components/coffee-script/extras/coffee-script.js"></script>
+<!--
+  <script src="bower_components/coffee-script/extras/coffee-script.js"></script>
   <script type="text/coffeescript" src="src/search-box.coffee"></script>
-  -->
+ -->
 </head>
 <body>
 
-  <div tabindex="1" class="search-box" id="search-box">
+  <span class="spacer">&nbsp;</span>
+  <select>
+    <option>master</option>
+    <option>feat/theme</option>
+    <option>feat/restore</option>
+    <option>doc/api</option>
+  </select>
 
-    <div class="current-selection">
-      <i class="icon"></i>
-      <span class="selected-item"></span>
-    </div>
-
-    <div class="dropdown">
-      <div class="dropdown--top">
-        <div class="dropdown--label">
-          Select user:
-          <div class="close">&times;</div>
-        </div>
-        <div class="dropdown--search-bar">
-          <input class="search-field"></input>
-        </div>
-      </div>
-      <div class="dropdown--options">
-        <ul class="option-list">
-          <li class="option-list--item">Will Johnson</li>
-          <li class="option-list--item">Will LaBranche</li>
-          <li class="option-list--item">Mike Schippert</li>
-          <li class="option-list--item">Nick Bottomley</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <button class="btn" id="show-hide" data-visible="0">Show Underlying <code>&lt;select&gt;</code></button>
 
   <!-- use local jQuery for faster development -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script>window.jQuery || document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"><\/script>')</script>
 
-  <script src="dist/search-box.js"></script>
+  <script src="dist/seeker.js"></script>
   <script>
-    var searchBox = new SearchBox("#search-box");
+    var select = $( "select" );
+    var seeker = new Seeker( select );
+
+    $( "#show-hide" ).on( "click", function ( evt ) {
+      if ( $( this ).attr( "data-visible" ) === "1" ) {
+        select.hide()
+        $( this ).attr( "data-visible", "0" )
+      } else {
+        select.show()
+        $( this ).attr( "data-visible", "1" )
+      }
+    });
+
   </script>
 </body>
 
