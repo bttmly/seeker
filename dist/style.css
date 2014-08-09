@@ -1,0 +1,96 @@
+.search-box {
+  width: 16em;
+  position: absolute; }
+  .search-box * {
+    box-sizing: border-box;
+    color: #333333; }
+
+.current-selection {
+  -webkit-user-select: none;
+  background: #eeeeee;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  padding: 0.25em;
+  cursor: pointer;
+  position: relative; }
+  .current-selection:after {
+    content: "\25BE";
+    position: absolute;
+    right: 0.5rem;
+    color: #555555; }
+
+.dropdown {
+  width: 100%;
+  position: absolute;
+  top: 110%;
+  top: -webkit-calc(.5em + 100% );
+  top: calc(.5em + 100% );
+  background: #eeeeee;
+  display: none;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.15); }
+
+.dropdown--top {
+  padding: 0.5rem 1rem 1rem; }
+
+.dropdown--label {
+  position: relative;
+  margin-bottom: 0.5rem; }
+
+.close {
+  position: absolute;
+  line-height: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  right: 0;
+  top: 2px;
+  width: 1rem;
+  height: 1rem;
+  color: #aaaaaa;
+  cursor: pointer; }
+  .close:hover {
+    color: #333333; }
+
+.search-field {
+  font: inherit;
+  width: 100%;
+  border-radius: 3px;
+  padding: 0.25em;
+  border: none;
+  box-shadow: 0px 0px 0px transparent;
+  transition: box-shadow 0.25s ease; }
+  .search-field:focus {
+    outline: none;
+    box-shadow: 0px 0px 4px 1px #2980b9; }
+
+.option-list {
+  background: white;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem; }
+
+.option-list--item {
+  cursor: pointer;
+  padding: 0.25rem 0 0.25rem 2rem; }
+  .option-list--item.is-active {
+    background: #2980b9;
+    color: white; }
+  .option-list--item.is-selected {
+    position: relative; }
+    .option-list--item.is-selected:before {
+      content: "\2022";
+      position: absolute;
+      left: 1rem; }
+  .option-list--item:not(:last-of-type) {
+    border-bottom: 1px solid #eeeeee; }
+  .option-list--item:last-of-type {
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem; }
+
+.search-box.is-open .current-selection {
+  background: #dddddd;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.25); }
+.search-box.is-open .dropdown {
+  display: block; }

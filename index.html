@@ -1,0 +1,50 @@
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" href="dist/style.css">
+  <style>
+    body {
+      font-family: "Avenir Next", sans-serif;
+    }
+  </style>
+  <script src="components/coffee-script/extras/coffee-script.js"></script>
+  <script type="text/coffeescript" src="src/search-box.coffee"></script>
+</head>
+<body>
+
+  <div class="search-box" id="search-box">
+
+    <div class="current-selection">
+      <i class="icon"></i>
+      <span class="selected-item"></span>
+    </div>
+
+    <div class="dropdown">
+      <div class="dropdown--top">
+        <div class="dropdown--label">
+          Select user:
+          <div class="close">&times;</div>
+        </div>
+        <div class="dropdown--search-bar">
+          <input class="search-field"></input>
+        </div>
+      </div>
+      <div class="dropdown--options">
+        <ul class="option-list">
+          <li class="option-list--item">Will Johnson</li>
+          <li class="option-list--item">Will LaBranche</li>
+          <li class="option-list--item">Mike Schippert</li>
+          <li class="option-list--item">Nick Bottomley</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="components/jquery/dist/jquery.js"></script>
+  <script src="dist/search-box.js"></script>
+  <script>
+    var searchBox = new SearchBox("#search-box");
+  </script>
+</body>
+
+</html>

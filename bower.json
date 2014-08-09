@@ -1,0 +1,27 @@
+{
+  "name": "seeker",
+  "version": "0.0.0",
+  "authors": [
+    "Nick Bottomley <nhbottomley@gmail.com>"
+  ],
+  "main": "dist/search-box.js",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "search",
+    "box",
+    "select",
+    "box",
+    "dropdown"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
