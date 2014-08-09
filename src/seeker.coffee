@@ -11,7 +11,17 @@ unless String::contains
 interpolate = ( str, obj ) ->
   str.replace /\{([^{}]*)\}/g, ( a, b ) ->
     r = obj[b]
-    if typeof r is "string" or typeof r is "number" then r else a
+    if typeof r is "string" or typeof r is "number" then r else ""
+
+extend = ( src, args... ) ->
+  for obj in args
+    for key in obj
+      src[key] = obj[key]
+  src
+
+defaults =
+  placeholder: "Filter results..."
+  label: "Select an option"
 
 slice = Function::call.bind Array::slice
 map = Function::call.bind Array::map
@@ -26,17 +36,17 @@ DOWN = 40
 template = """
   <div class="seeker">
     <div class="current-selection">
-      <i class="icon"></i>
+      <i class="icon {icon-class}"></i>
       <span class="selected-item"></span>
     </div>
     <div class="dropdown">
       <div class="dropdown--top">
         <div class="dropdown--label">
-          Select branch:
+          {label}
           <div class="close">&times;</div>
         </div>
         <div class="dropdown--search-bar">
-          <input class="search-field"></input>
+          <input class="search-field" placeholder="{placeholder}"></input>
         </div>
       </div>
       <div class="dropdown--options">
@@ -59,16 +69,17 @@ normalize = ( param ) ->
   else
     $ param
 
-buildHtml = ( el ) ->
-  params = {}
-  params.options = map el.find( "option" ), ( option ) ->
+buildHtml = ( el, settings ) ->
+  settings.options = map el.find( "option" ), ( option ) ->
     "<li class='option-list--item'>#{ option.innerHTML }</li>"
   .join "\n"
-  interpolate template, params
+  console.log settings
+  interpolate template, settings
 
 class Seeker extends jQuery
-  constructor: ( el ) ->
-    html = buildHtml el
+  constructor: ( el, opts = {} ) ->
+    settings = extend defaults, opts
+    html = buildHtml el, settings
     jQuery.fn.init.call this, html
     @el = el
     @button = @find ".current-selection"
@@ -109,9 +120,11 @@ class Seeker extends jQuery
         if el.innerHTML is @selectedItem[0].innerHTML
           el.selected = true
           false
+          @el.trigger "change", true
 
     # Seeker listens for changes to <select>
-    @el.on "change", =>
+    @el.on "change", ( evt, seeker ) =>
+      return if seeker
       selected = @el.find ":selected"
       @items.each ( i, el ) =>
         if el.innerHTML is selected[0].innerHTML
