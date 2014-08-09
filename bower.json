@@ -4,7 +4,7 @@
   "authors": [
     "Nick Bottomley <nhbottomley@gmail.com>"
   ],
-  "main": "dist/search-box.js",
+  "main": "dist/seeker.js",
   "moduleType": [
     "globals",
     "node"
@@ -23,5 +23,11 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+  },
+  "devDependencies": {
+    "coffee-script": "~1.7.1"
+  }
 }

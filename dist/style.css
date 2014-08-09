@@ -1,7 +1,11 @@
-.search-box {
-  width: 16em;
-  position: absolute; }
-  .search-box * {
+.seeker {
+  width: 12em;
+  position: relative; }
+  .seeker:active {
+    outline: none; }
+    .seeker:active .current-selection {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.15); }
+  .seeker * {
     box-sizing: border-box;
     color: #333333; }
 
@@ -20,7 +24,7 @@
     color: #555555; }
 
 .dropdown {
-  width: 100%;
+  width: 16rem;
   position: absolute;
   top: 110%;
   top: -webkit-calc(.5em + 100% );
@@ -89,8 +93,8 @@
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem; }
 
-.search-box.is-open .current-selection {
+.seeker.is-open .current-selection {
   background: #dddddd;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.25); }
-.search-box.is-open .dropdown {
+.seeker.is-open .dropdown {
   display: block; }
