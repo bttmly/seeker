@@ -1,6 +1,8 @@
 .seeker {
   width: 12em;
   position: relative; }
+  .seeker:focus .current-selection {
+    border: 0px 0px 4px 1px #2980b9; }
   .seeker:active {
     outline: none; }
     .seeker:active .current-selection {
@@ -96,5 +98,8 @@
 .seeker.is-open .current-selection {
   background: #dddddd;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.25); }
+  .seeker.is-open .current-selection:after {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg); }
 .seeker.is-open .dropdown {
   display: block; }
