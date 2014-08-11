@@ -83,7 +83,8 @@
     color: white; }
   .option-list--item.is-disabled {
     background: whitesmoke;
-    color: #666666; }
+    color: #666666;
+    pointer-events: none; }
   .option-list--item.is-selected {
     position: relative; }
     .option-list--item.is-selected:before {

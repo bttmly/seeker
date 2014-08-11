@@ -79,6 +79,9 @@
       if (item[0].disabled) {
         li.addClass("is-disabled");
       }
+      if (item[0].selected) {
+        li.addClass("is-selected");
+      }
       return li.appendTo(list);
     });
     return list[0].outerHTML;
@@ -138,7 +141,7 @@
       this.closeMark.click(this.close);
       this.items.click(this.setSelected);
       this.items.mouseover(this.setActive);
-      this.setSelected(this.items.first()).wireOriginal().close().el.hide().after(this);
+      this.setSelected(this.items.filter(".is-selected")).wireOriginal().close().el.hide().after(this);
     }
 
     Seeker.prototype.wireOriginal = function() {
@@ -268,7 +271,7 @@
 
     Seeker.prototype.setSelected = function(param, quiet) {
       param = normalize.call(this, param);
-      if (param !== this.selectedItem) {
+      if (param !== this.selectedItem && param.isnt(".is-disabled")) {
         this.selectedItem = param;
         this.items.removeClass("is-selected");
         this.selectedItem.addClass("is-selected");
@@ -304,6 +307,9 @@
     },
     prevMatching: function(selector) {
       return this.prevAll(selector).first();
+    },
+    isnt: function(param) {
+      return !this.is(param);
     }
   });
 

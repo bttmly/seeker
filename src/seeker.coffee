@@ -79,6 +79,8 @@ buildList = ( el ) ->
       li = $ "<li class=\"option-list--heading\">#{ item[0].label }</li>"
     if item[0].disabled
       li.addClass "is-disabled"
+    if item[0].selected
+      li.addClass "is-selected"
     li.appendTo list
   list[0].outerHTML
 
@@ -119,7 +121,7 @@ class Seeker extends jQuery
     @items.mouseover @setActive
 
     this
-      .setSelected @items.first()
+      .setSelected @items.filter ".is-selected"
       .wireOriginal()
       .close()
       .el.hide().after @
@@ -217,7 +219,7 @@ class Seeker extends jQuery
 
   setSelected: ( param, quiet ) =>
     param = normalize.call @, param
-    if param isnt @selectedItem
+    if param isnt @selectedItem and param.isnt ".is-disabled"
       @selectedItem = param
       @items.removeClass "is-selected"
       @selectedItem.addClass "is-selected"
@@ -246,6 +248,9 @@ $.extend $.fn,
 
   prevMatching: ( selector ) ->
       @prevAll( selector ).first()
+
+  isnt: ( param ) ->
+    not @is param
 
 exports = exports ? this
 exports.Seeker = Seeker
