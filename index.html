@@ -8,8 +8,12 @@
       padding: 2rem
     }
 
-    button, input {
+    button, select {
       font: inherit;
+    }
+
+    select {
+      margin-bottom: 1rem;
     }
 
     .btn {
@@ -38,15 +42,16 @@
 </head>
 <body>
 
-  <span class="spacer">&nbsp;</span>
   <select>
     <option>master</option>
     <option>feat/theme</option>
-    <option>feat/restore</option>
-    <option>doc/api</option>
+    <option disabled>feat/restore</option>
+    <option selected>doc/api</option>
   </select>
 
+  <!--
   <button class="btn" id="show-hide" data-visible="0">Show Underlying <code>&lt;select&gt;</code></button>
+  -->
 
   <!-- use local jQuery for faster development -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -54,18 +59,19 @@
 
   <script src="dist/seeker.js"></script>
   <script>
+
+    // $( "#show-hide" ).on( "click", function ( evt ) {
+    //   if ( $( this ).attr( "data-visible" ) === "1" ) {
+    //     select.hide()
+    //     $( this ).attr( "data-visible", "0" )
+    //   } else {
+    //     select.show()
+    //     $( this ).attr( "data-visible", "1" )
+    //   }
+    // });
+
     var select = $( "select" );
     var seeker = new Seeker( select );
-
-    $( "#show-hide" ).on( "click", function ( evt ) {
-      if ( $( this ).attr( "data-visible" ) === "1" ) {
-        select.hide()
-        $( this ).attr( "data-visible", "0" )
-      } else {
-        select.show()
-        $( this ).attr( "data-visible", "1" )
-      }
-    });
 
   </script>
 </body>
