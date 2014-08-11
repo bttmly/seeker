@@ -1,8 +1,6 @@
 .seeker {
   width: 12em;
   position: relative; }
-  .seeker:focus .current-selection {
-    border: 0px 0px 4px 1px #2980b9; }
   .seeker:active {
     outline: none; }
     .seeker:active .current-selection {
@@ -13,8 +11,8 @@
 
 .current-selection {
   -webkit-user-select: none;
-  background: #eeeeee;
-  border: 1px solid #dddddd;
+  background: whitesmoke;
+  border: 1px solid #cccccc;
   border-radius: 4px;
   padding: 0.25em;
   cursor: pointer;
@@ -31,7 +29,7 @@
   top: 110%;
   top: -webkit-calc(.5em + 100% );
   top: calc(.5em + 100% );
-  background: #eeeeee;
+  background: whitesmoke;
   display: none;
   border-radius: 0.25rem;
   box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.15); }
@@ -83,6 +81,9 @@
   .option-list--item.is-active {
     background: #2980b9;
     color: white; }
+  .option-list--item.is-disabled {
+    background: whitesmoke;
+    color: #666666; }
   .option-list--item.is-selected {
     position: relative; }
     .option-list--item.is-selected:before {
@@ -90,7 +91,7 @@
       position: absolute;
       left: 1rem; }
   .option-list--item:not(:last-of-type) {
-    border-bottom: 1px solid #eeeeee; }
+    border-bottom: 1px solid #dddddd; }
   .option-list--item:last-of-type {
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem; }

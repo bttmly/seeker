@@ -13,18 +13,14 @@ interpolate = ( str, obj ) ->
     r = obj[b]
     if typeof r is "string" or typeof r is "number" then r else ""
 
-extend = ( src, args... ) ->
-  for obj in args
-    for key in obj
-      src[key] = obj[key]
-  src
-
 defaults =
   placeholder: "Filter results..."
   label: "Select an option"
 
 slice = Function::call.bind Array::slice
 map = Function::call.bind Array::map
+each = Function::call.bind Array::forEach
+
 body = $ "body"
 
 # key codes
@@ -50,9 +46,10 @@ template = """
         </div>
       </div>
       <div class="dropdown--options">
-        <ul class="option-list">
-          {options}
-        </ul>
+        {list}
+        <div class="dropdown--empty-msg">
+          {empty}
+        </div>
       </div>
     </div>
   </div>
@@ -72,16 +69,26 @@ normalize = ( param ) ->
   else
     $ param
 
+buildList = ( el ) ->
+  list = $ "<ul class=\"option-list\"></ul>"
+  each el.find( "option, optgroup" ), ( item ) ->
+    item = $ item
+    if item.is "option"
+      li = $ "<li class=\"option-list--item\">#{ item[0].innerHTML }</li>"
+    else
+      li = $ "<li class=\"option-list--heading\">#{ item[0].label }</li>"
+    if item[0].disabled
+      li.addClass "is-disabled"
+    li.appendTo list
+  list[0].outerHTML
+
 buildHtml = ( el, settings ) ->
-  settings.options = map el.find( "option" ), ( option ) ->
-    "<li class='option-list--item'>#{ option.innerHTML }</li>"
-  .join "\n"
-  console.log settings
-  interpolate template, settings
+  settings.list = buildList el
+  str = interpolate template, settings
 
 class Seeker extends jQuery
   constructor: ( el, opts = {} ) ->
-    settings = extend defaults, opts
+    settings = $.extend {}, defaults, opts
     html = buildHtml el, settings
     jQuery.fn.init.call this, html
     @el = el
@@ -97,6 +104,7 @@ class Seeker extends jQuery
     @filteredOptions = null
     @selectedItem = null
     @activeItem = null
+
     # set up event listeners
     body.on "click", @close
     @click ( evt ) ->
@@ -111,9 +119,9 @@ class Seeker extends jQuery
     @items.mouseover @setActive
 
     this
-      .wireOriginal()
       .setSelected @items.first()
-      .toggleClass "is-open", false
+      .wireOriginal()
+      .close()
       .el.hide().after @
 
   wireOriginal: =>
@@ -145,14 +153,17 @@ class Seeker extends jQuery
       @isOpen = true
       @toggleClass "is-open", @isOpen
       @searchField.focus()
+    @
 
   close: =>
     if @isOpen
       @isOpen = false
+      @setActive @selectedItem
       @toggleClass "is-open", @isOpen
       @items.show()
       @searchField.val ""
       @focus()
+    @
 
   toggleState: =>
     if @isOpen then @close() else @open()
@@ -164,11 +175,11 @@ class Seeker extends jQuery
       @switchToActive()
       evt.stopPropagation()
     else if evt.which is UP
-      prev = @activeItem.prev()
+      prev = @activeItem.prevMatching ".option-list--item:not(.is-disabled)"
       if prev.length
         @setActive prev
     else if evt.which is DOWN
-      next = @activeItem.next()
+      next = @activeItem.nextMatching ".option-list--item:not(.is-disabled)"
       if next.length
         @setActive next
     else
@@ -185,7 +196,10 @@ class Seeker extends jQuery
         first = $this unless first
       else
         $this.hide()
-    @setActive first
+    if first
+      @setActive first
+    else
+      # empty...
 
   switchToActive: =>
     @setSelected @activeItem
@@ -208,21 +222,30 @@ class Seeker extends jQuery
       @items.removeClass "is-selected"
       @selectedItem.addClass "is-selected"
       @current.html @selectedItem.html()
-      @trigger "change" unless quiet
       @setActive @selectedItem
+      @trigger "change" unless quiet
     @close()
-    @
 
   # wrapper fix, a la space pen
   pushStack: ( elems ) ->
     ret = jQuery.merge jQuery(), elems
-    ret.prevObject = this
+    ret.prevObject = @
     ret.context = @context
     ret
 
   # wrapper fix, a la space pen
   end: ->
     @prevObject ? jQuery null
+
+
+
+
+$.extend $.fn,
+  nextMatching: ( selector ) ->
+      @nextAll( selector ).first()
+
+  prevMatching: ( selector ) ->
+      @prevAll( selector ).first()
 
 exports = exports ? this
 exports.Seeker = Seeker
