@@ -99,6 +99,7 @@ class Seeker extends jQuery
     @dropdown = @find ".dropdown"
     @searchField = @find ".search-field"
     @items = @find ".option-list--item"
+    @enabled = @items.filter ":not(.is-disabled)"
     @selection = @find ".selection"
     @closeMark = @find ".close"
 
@@ -117,11 +118,12 @@ class Seeker extends jQuery
     @button.click @toggleState
     @searchField.keyup @handleInput
     @closeMark.click  @close
-    @items.click @setSelected
-    @items.mouseover @setActive
+    @enabled.click @setSelected
+    @enabled.mouseover @setActive
 
-    this
-      .setSelected @items.filter ".is-selected"
+
+
+    @setSelected @items.filter ".is-selected"
       .wireOriginal()
       .close()
       .el.hide().after @
