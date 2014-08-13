@@ -4,9 +4,26 @@ else
   { jQuery } = window
   $ = jQuery
 
+# String::contains polyfill
 unless String::contains
   String::contains = ->
     String::indexOf.apply( this, arguments ) isnt -1
+
+# Element::matches polyfill
+if Element and not Element::matches
+  Element::matches =
+    Element::matchesSelector or
+    Element::mozMatchesSelector  or
+    Element::msMatchesSelector or
+    Element::oMatchesSelector or
+    Element::webkitMatchesSelector or
+    ( selector ) ->
+      nodes = ( @parentNode or @document ).querySelectorAll( selector )
+      i = 0
+      while i < nodes.length
+        return true if nodes[i] is this
+        i += 1
+      return false
 
 interpolate = ( str, obj ) ->
   str.replace /\{([^{}]*)\}/g, ( a, b ) ->
@@ -79,6 +96,8 @@ buildList = ( el ) ->
       li = $ "<li class=\"option-list--heading\">#{ item[0].label }</li>"
     if item[0].disabled
       li.addClass "is-disabled"
+    if item[0].parentNode.matches "optgroup" and item[0].parentNode.disabled
+      li.addClass "is-disabled"
     if item[0].selected
       li.addClass "is-selected"
     li.appendTo list
@@ -121,14 +140,12 @@ class Seeker extends jQuery
     @enabled.click @setSelected
     @enabled.mouseover @setActive
 
-
-
     @setSelected @items.filter ".is-selected"
-      .wireOriginal()
+      ._wireOriginal()
       .close()
       .el.hide().after @
 
-  wireOriginal: =>
+  _wireOriginal: =>
     # <select> listens for changes to Seeker
     @on "change", =>
       @el.find( "option" ).each ( i, el ) =>
@@ -240,8 +257,6 @@ class Seeker extends jQuery
   # wrapper fix, a la space pen
   end: ->
     @prevObject ? jQuery null
-
-
 
 
 $.extend $.fn,
