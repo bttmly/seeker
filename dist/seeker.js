@@ -18,6 +18,21 @@
     };
   }
 
+  if (Element && !Element.prototype.matches) {
+    Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector || function(selector) {
+      var i, nodes;
+      nodes = (this.parentNode || this.document).querySelectorAll(selector);
+      i = 0;
+      while (i < nodes.length) {
+        if (nodes[i] === this) {
+          return true;
+        }
+        i += 1;
+      }
+      return false;
+    };
+  }
+
   interpolate = function(str, obj) {
     return str.replace(/\{([^{}]*)\}/g, function(a, b) {
       var r;
@@ -79,6 +94,9 @@
       if (item[0].disabled) {
         li.addClass("is-disabled");
       }
+      if (item[0].parentNode.matches("optgroup" && item[0].parentNode.disabled)) {
+        li.addClass("is-disabled");
+      }
       if (item[0].selected) {
         li.addClass("is-selected");
       }
@@ -119,6 +137,7 @@
       this.dropdown = this.find(".dropdown");
       this.searchField = this.find(".search-field");
       this.items = this.find(".option-list--item");
+      this.enabled = this.items.filter(":not(.is-disabled)");
       this.selection = this.find(".selection");
       this.closeMark = this.find(".close");
       this.isOpen = false;
@@ -139,8 +158,8 @@
       this.button.click(this.toggleState);
       this.searchField.keyup(this.handleInput);
       this.closeMark.click(this.close);
-      this.items.click(this.setSelected);
-      this.items.mouseover(this.setActive);
+      this.enabled.click(this.setSelected);
+      this.enabled.mouseover(this.setActive);
       this.setSelected(this.items.filter(".is-selected")).wireOriginal().close().el.hide().after(this);
     }
 
