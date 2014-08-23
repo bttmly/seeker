@@ -127,11 +127,11 @@
       this.toggleState = __bind(this.toggleState, this);
       this.close = __bind(this.close, this);
       this.open = __bind(this.open, this);
-      this.wireOriginal = __bind(this.wireOriginal, this);
+      this._wireOriginal = __bind(this._wireOriginal, this);
       settings = $.extend({}, defaults, opts);
       html = buildHtml(el, settings);
       jQuery.fn.init.call(this, html);
-      this.el = el;
+      this.el = normalize(el);
       this.button = this.find(".current-selection");
       this.current = this.find(".selected-item");
       this.dropdown = this.find(".dropdown");
@@ -160,10 +160,10 @@
       this.closeMark.click(this.close);
       this.enabled.click(this.setSelected);
       this.enabled.mouseover(this.setActive);
-      this.setSelected(this.items.filter(".is-selected")).wireOriginal().close().el.hide().after(this);
+      this.setSelected(this.items.filter(".is-selected"))._wireOriginal().close().el.hide().after(this);
     }
 
-    Seeker.prototype.wireOriginal = function() {
+    Seeker.prototype._wireOriginal = function() {
       this.on("change", (function(_this) {
         return function() {
           return _this.el.find("option").each(function(i, el) {

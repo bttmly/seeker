@@ -112,7 +112,7 @@ class Seeker extends jQuery
     settings = $.extend {}, defaults, opts
     html = buildHtml el, settings
     jQuery.fn.init.call this, html
-    @el = el
+    @el = normalize el
     @button = @find ".current-selection"
     @current = @find ".selected-item"
     @dropdown = @find ".dropdown"

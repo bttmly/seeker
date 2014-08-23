@@ -10,12 +10,26 @@ A combination search/select box, inspired by those seen here and there on GitHub
 - Choosing an option and closing the dropdown with enter key
 - Updates underlying `<select>` element on change, and triggers "change" event
 
-## Usage/Installation
+## Installation
 Install with bower:
 `bower install seeker`
 
 Or through NPM for Browserify:
 `npm install seeker`
+
+## Usage
+Pass a jQuery selection, a CSS selector, or a DOM node to the constructor.
+
+```js
+// jQuery selection
+var seeker = new Seeker( $( 'select' ) );
+
+// CSS selector
+var seeker = new Seeker( 'select' );
+
+// DOM node
+var seeker = new Seeker( document.querySelector( 'select' ) );
+```
 
 ## API: Methods
 ### `.open()` -> `Seeker instance`
