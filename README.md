@@ -31,27 +31,28 @@ var seeker = new Seeker( 'select' );
 var seeker = new Seeker( document.querySelector( 'select' ) );
 ```
 
-## API: Methods
-### `.open()` -> `Seeker instance`
+## API
+### Methods
+#### `.open()` -> `Seeker instance`
 Opens the dropdown and focuses the search field. Returns the instance.
 
-### `.open()` -> `Seeker instance`
+#### `.close()` -> `Seeker instance`
 Closes the dropdown. Returns the instance.
 
-### `.setActive(Number index | Element el | Event evt | String selector | jQuery jqObj)` -> `Seeker instance`
+#### `.setActive(Number index | Element el | Event evt | String selector | jQuery jqObj)` -> `Seeker instance`
 Sets the active (i.e. highlighted) option. If passed an index _n_ then the nth option will be highlighted. If passed a jQuery object, will highlight the first element in the collection if present in options. Otherwise, will apply jQuery to String or DOM Element and likewise locate and highlight that element. If passed an Event (or any object with a .target property), will use that element.
 
-### `.setSelected(Number index | Element el | Event evt | String selector | jQuery jqObj)` -> `Seeker instance`
+#### `.setSelected(Number index | Element el | Event evt | String selector | jQuery jqObj)` -> `Seeker instance`
 Sets the selected option and closes the dropdown if open. Accepts same variety of arguments as `setActive`.
 
-### `.val()` => `String`
+#### `.val()` => `String`
 Returns `select.val()` where select is the `<select>` element underlying the Seeker instance. Unlike calling `.val()` on a jQuery-wrapped `select`, *can't be use to set the value~.
 
-## API: Properties
-### `.activeItem`
+### Properties
+#### `.activeItem`
 the jQuery selection representing the currently active option.
 
-### `.selectedItem`
+#### `.selectedItem`
 The jQuery selection representing the currently selected option.
 
 ## Looks like this ([demo](http://nickb1080.github.io/seeker/))
